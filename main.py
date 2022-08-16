@@ -31,9 +31,6 @@ from art import logo
 print(logo)
 alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n")
-text = input("Type your message:\n").lower()
-shift = int(input("Type the shift number:\n"))
 
 
 
@@ -65,18 +62,33 @@ shift = int(input("Type the shift number:\n"))
 #     decrypt(cipher_text=text, shift_amount=shift)
 
 
-def caeser(test_text, test_shift, given_direction):
+def caeser(start_text, shift_amount, cipher_direction):
   word = ''
 
-  for letter in text:
-    position = alphabet.index(letter)
+  if cipher_direction == 'decode':
+    shift_amount *= -1
 
-    if direction == 'encode':
-      new_position = position + shift
-    elif direction == 'decode':
-      new_position = position - shift
-    word += alphabet[new_position]
-  print(f"The {direction}d text is {word}")
 
-caeser(test_text=text, test_shift=shift, given_direction=direction)
+  for char in start_text:
+    if char in alphabet:
+      position = alphabet.index(char)
+      new_position = position + shift_amount
+      word += alphabet[new_position]
+    else:
+      word += char
+  print(f"The {cipher_direction}d text is {word}")
+
+should_continue = True
+while should_continue:
+  direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n")
+  text = input("Type your message:\n").lower()
+  shift = int(input("Type the shift number:\n"))
+
+  shift = shift % 26
+  caeser(start_text=text, shift_amount=shift, cipher_direction=direction)
+
+  decision = input("Type 'yes' if you wish to continue. Else type 'no' \n")
+  if decision == 'no':
+    should_continue = False
+    print('Good Bye!')
 
